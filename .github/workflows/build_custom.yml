@@ -21,6 +21,13 @@ jobs:
         with:
           cache-disabled: true # Bypasses the broken GitHub cache servers entirely
 
+      - name: Ensure Core Build Files Exist
+        run: |
+          if [ ! -f common.gradle ]; then
+            echo "common.gradle is missing! Pulling fresh copy from upstream..."
+            curl -sLO https://raw.githubusercontent.com/keiyoushi/extensions-source/main/common.gradle
+          fi
+
       - name: Build Specific Extension Only
         run: |
           chmod +x gradlew
