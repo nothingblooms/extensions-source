@@ -21,9 +21,10 @@ jobs:
         with:
           cache-disabled: true
 
-      - name: Build Specific Extension Only
+      - name: Auto-Format and Build Extension
         run: |
           chmod +x gradlew
+          ./gradlew :src:en:lgbtics:spotlessApply
           ./gradlew :src:en:lgbtics:assembleDebug
 
       - name: Upload Finished APK
