@@ -37,11 +37,12 @@ jobs:
           find src -mindepth 1 -maxdepth 3 -not -path 'src/en/lgbtics*' -exec rm -rf {} +
 
       - name: Build Extension
-        run: |
-          chmod +x gradlew
-          # Now that other sources are gone, the build system can't see them
-          ./gradlew :src:en:lgbtics:assembleDebug -x spotlessKotlinCheck
-
+       run: |
+         chmod +x gradlew
+         # Navigate to your extension's folder and run the build there.
+         # The -p flag tells Gradle to treat that folder as the project root.
+         ./gradlew assembleDebug -p src/en/lgbtics -x spotlessKotlinCheck
+        
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
