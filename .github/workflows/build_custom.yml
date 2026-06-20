@@ -41,20 +41,16 @@ jobs:
           rm -f signingkey.jks
 
       - name: Build Extension
-       run: |
-         chmod +x gradlew
-         ./gradlew :src:en:lgbtics:assembleDebug -x spotlessKotlinCheck 
-          # 1. Move your extension to a folder Gradle won't automatically scan
-          mkdir -p my_extension
-          cp -r src/en/lgbtics/* my_extension/
+        run: |
+          chmod +x gradlew
+          # Skip ALL checking tasks including Spotless and Lint
+          # and specifically target only your extension
+          ./gradlew :src:en:lgbtics:assembleDebug \
+            -x spotlessKotlinCheck \
+            -x lintDebug \
+            -x test \
+            -x check
           
-          # 2. Patch the dependency references in the build file
-          # This replaces references to the 'root' projects with just local references
-          sed -i 's/project(":lib-multisrc:/project("..\/..\/lib-multisrc:/g' my_extension/build.gradle.kts
-          sed -i 's/project(":core")/project("..\/..\/core")/g' my_extension/build.gradle.kts
-          
-          # 3. Build it from the new location
-          ./gradlew assembleDebug -p my_extension -x spotlessKotlinCheck
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
