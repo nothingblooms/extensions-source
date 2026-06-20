@@ -36,9 +36,7 @@ jobs:
       - name: Build Extension
         run: |
           chmod +x gradlew
-          # We no longer need the 'echo include...' lines because 
-          # the sparse checkout now provides the files.
-          ./gradlew :src:en:lgbtics:spotlessApply
+          # Only build the debug variant of your specific extension
           ./gradlew :src:en:lgbtics:assembleDebug
 
       - name: Upload Finished APK
