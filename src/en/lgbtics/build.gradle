@@ -1,9 +1,10 @@
 ext {
     extName = 'Lgbtics'
     extClass = '.Lgbtics'
-    extVersionCode = 1
+    themePkg = 'madara'
+    baseUrl = 'https://lgbtics.com'
+    overrideVersionCode = 1
     isNsfw = true
-    themePkg = 'madara' // <- This links the missing Madara blueprint library!
 }
 
 apply plugin: "kei.plugins.extension.legacy"
