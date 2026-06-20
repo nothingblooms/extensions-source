@@ -1,9 +1,8 @@
 ext {
     extName = 'Lgbtics'
     extClass = '.Lgbtics'
-    themePkg = 'madara'
-    baseUrl = 'https://lgbtics.com'
-    overrideVersionCode = 1
+    extVersionCode = 1
+    isNsfw = true
 }
 
-apply from: "$rootDir/common.gradle"
+apply plugin: "kei.plugins.extension.legacy"
