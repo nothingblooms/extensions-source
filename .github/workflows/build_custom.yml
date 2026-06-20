@@ -24,8 +24,8 @@ jobs:
       - name: Ensure Core Build Files Exist
         run: |
           if [ ! -f common.gradle ]; then
-            echo "common.gradle is missing! Pulling fresh copy from upstream..."
-            curl -sLO https://raw.githubusercontent.com/keiyoushi/extensions-source/main/common.gradle
+            echo "common.gradle is missing! Pulling stable legacy copy..."
+            curl -sLO https://raw.githubusercontent.com/keiyoushi/extensions-source/b9f7cdc/common.gradle
           fi
 
       - name: Build Specific Extension Only
