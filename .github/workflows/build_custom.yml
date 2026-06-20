@@ -1,7 +1,7 @@
 name: Build My Custom Extension
 
 on:
-  workflow_dispatch: # Gives you a manual trigger button
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,6 +24,9 @@ jobs:
       - name: Auto-Format and Build Extension
         run: |
           chmod +x gradlew
+          # Force Gradle to include the multi-source core dependency module
+          echo 'include(":lib-multisrc:madara")' >> settings.gradle.kts || echo 'include(":lib-multisrc:madara")' >> settings.gradle
+          
           ./gradlew :src:en:lgbtics:spotlessApply
           ./gradlew :src:en:lgbtics:assembleDebug
 
