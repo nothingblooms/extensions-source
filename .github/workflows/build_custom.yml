@@ -9,6 +9,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          # This tells GitHub to only download the folders required for your build
+          sparse-checkout: |
+            core
+            gradle
+            lib
+            lib-multisrc
+            src/en/lgbtics
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -16,17 +24,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle (No Cache Mode)
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-        with:
-          cache-disabled: true
 
-      - name: Auto-Format and Build Extension
+      - name: Build Extension
         run: |
           chmod +x gradlew
-          # Force Gradle to include the multi-source core dependency module
-          echo 'include(":lib-multisrc:madara")' >> settings.gradle.kts || echo 'include(":lib-multisrc:madara")' >> settings.gradle
-          
+          # We no longer need the 'echo include...' lines because 
+          # the sparse checkout now provides the files.
           ./gradlew :src:en:lgbtics:spotlessApply
           ./gradlew :src:en:lgbtics:assembleDebug
 
