@@ -39,10 +39,18 @@ jobs:
       - name: Build Extension
        run: |
          chmod +x gradlew
-         # Navigate to your extension's folder and run the build there.
-         # The -p flag tells Gradle to treat that folder as the project root.
-         ./gradlew assembleDebug -p src/en/lgbtics -x spotlessKotlinCheck
-        
+          
+          # 1. Move your extension to a folder Gradle won't automatically scan
+          mkdir -p my_extension
+          cp -r src/en/lgbtics/* my_extension/
+          
+          # 2. Patch the dependency references in the build file
+          # This replaces references to the 'root' projects with just local references
+          sed -i 's/project(":lib-multisrc:/project("..\/..\/lib-multisrc:/g' my_extension/build.gradle.kts
+          sed -i 's/project(":core")/project("..\/..\/core")/g' my_extension/build.gradle.kts
+          
+          # 3. Build it from the new location
+          ./gradlew assembleDebug -p my_extension -x spotlessKotlinCheck
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
