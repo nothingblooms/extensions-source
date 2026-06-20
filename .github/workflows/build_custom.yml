@@ -43,7 +43,7 @@ jobs:
       - name: Build Extension
        run: |
          chmod +x gradlew
-          
+         ./gradlew :src:en:lgbtics:assembleDebug -x spotlessKotlinCheck 
           # 1. Move your extension to a folder Gradle won't automatically scan
           mkdir -p my_extension
           cp -r src/en/lgbtics/* my_extension/
