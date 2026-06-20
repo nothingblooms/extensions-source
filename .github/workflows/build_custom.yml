@@ -31,10 +31,14 @@ jobs:
           cache-write-only: false
           gradle-home-cache-cleanup: false
 
-      - name: Isolate Extension
+      - name: Force Isolation
         run: |
-          # This deletes everything in 'src' EXCEPT your extension
-          find src -mindepth 1 -maxdepth 3 -not -path 'src/en/lgbtics*' -exec rm -rf {} +
+          # This deletes every folder in src except your target extension
+          # It prevents Gradle from finding and trying to build/sign other extensions
+          find src -mindepth 2 -maxdepth 3 -not -path 'src/en/lgbtics*' -exec rm -rf {} +
+          
+          # Delete the signing key file so it cannot be used
+          rm -f signingkey.jks
 
       - name: Build Extension
        run: |
