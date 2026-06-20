@@ -1,0 +1,9 @@
+ext {
+    extName = 'Lgbtics'
+    extClass = '.Lgbtics'
+    themePkg = 'madara'
+    baseUrl = 'https://lgbtics.com'
+    overrideVersionCode = 1
+}
+
+apply from: "$rootDir/common.gradle"
