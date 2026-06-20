@@ -12,6 +12,7 @@ jobs:
         with:
           # This tells GitHub to only download the folders required for your build
           sparse-checkout: |
+            common
             core
             gradle
             lib
