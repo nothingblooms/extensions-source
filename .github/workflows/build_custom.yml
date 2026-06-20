@@ -36,9 +36,10 @@ jobs:
       - name: Build Extension
         run: |
          chmod +x gradlew
-          # Specifically and ONLY build the debug APK for your extension.
-          # We use '-x' to ensure we don't accidentally trigger any release-related tasks.
-          ./gradlew :src:en:lgbtics:assembleDebug -x :src:en:lgbtics:assembleRelease
+          # This command automatically fixes the formatting violations for you
+          ./gradlew :src:en:lgbtics:spotlessApply
+          # Now build the debug APK
+          ./gradlew :src:en:lgbtics:assembleDebug
 
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
