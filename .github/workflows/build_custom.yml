@@ -45,7 +45,7 @@ jobs:
           chmod +x gradlew
           # Skip ALL checking tasks including Spotless and Lint
           # and specifically target only your extension
-          ./gradlew :src:en:lgbtics:assembleDebug \
+          ./gradlew :src:en:lgbtics:assembleDebug --settings-file settings.gradle.kts -x spotlessKotlinCheck -x lintDebug -x test -x check
             -x spotlessKotlinCheck \
             -x lintDebug \
             -x test \
