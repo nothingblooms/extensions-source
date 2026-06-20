@@ -19,14 +19,7 @@ jobs:
       - name: Setup Gradle (No Cache Mode)
         uses: gradle/actions/setup-gradle@v3
         with:
-          cache-disabled: true # Bypasses the broken GitHub cache servers entirely
-
-      - name: Ensure Core Build Files Exist
-        run: |
-          if [ ! -f common.gradle ]; then
-            echo "common.gradle is missing! Pulling stable legacy copy..."
-            curl -sLO https://raw.githubusercontent.com/keiyoushi/extensions-source/b9f7cdc/common.gradle
-          fi
+          cache-disabled: true
 
       - name: Build Specific Extension Only
         run: |
