@@ -5,21 +5,20 @@ ext {
     isNsfw = true
 }
 
-apply(plugin = "com.android.application")
-apply(plugin = "kotlin-android")
+// THIS IS THE MISSING PIECE:
+apply from: "$rootDir/multisrc/multisrc.gradle"
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    namespace = "eu.kanade.tachiyomi.extension.en.lgbtics"
+    namespace = 'eu.kanade.tachiyomi.extension.en.lgbtics'
     compileSdk = 34
-    
     defaultConfig {
         minSdk = 21
     }
 }
 
 dependencies {
-    // This line is what fixes your "Unresolved reference" errors
-    implementation(project(":multisrc:src:main:java:eu:kanade:tachiyomi:multisrc:madara"))
-    // You also need the core library
-    implementation(project(":core"))
+    implementation project(':core')
 }
