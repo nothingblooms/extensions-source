@@ -18,10 +18,8 @@ jobs:
 
       - name: Build Extension
         run: |
-          # We use the root gradlew. 
-          # The repo's settings.gradle.kts already knows where :src:en:lgbtics is.
-          # We just need to trigger the specific task.
-          
+          # Do not move files. Stay at the root of the repo.
+          # The repo already knows where multisrc is.
           ./gradlew :src:en:lgbtics:assembleDebug \
             -x spotlessKotlinCheck \
             -x lintDebug \
