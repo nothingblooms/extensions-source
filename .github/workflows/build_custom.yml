@@ -9,18 +9,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            common
-            core
-            gradle
-            lib
-            lib-multisrc
-
-      - name: Setup Extension
-        run: |
-          mkdir -p src/en/lgbtics
-          git sparse-checkout add src/en/lgbtics
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -28,26 +16,37 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          cache-read-only: true
-          cache-write-only: false
-          gradle-home-cache-cleanup: false
-
       - name: Build Extension
         run: |
-          # Build only your extension and specifically exclude all signing tasks
-          ./gradlew :src:en:lgbtics:assembleDebug \
+          # 1. Create a totally separate workspace
+          mkdir -p ../isolated_workspace
+          
+          # 2. Copy ONLY the necessary components for your extension
+          cp -r src/en/lgbtics ../isolated_workspace/
+          cp -r core ../isolated_workspace/
+          cp -r lib-multisrc ../isolated_workspace/
+          cp -r gradle ../isolated_workspace/
+          cp gradlew ../isolated_workspace/
+          
+          # 3. Enter the isolated workspace
+          cd ../isolated_workspace
+          
+          # 4. Create a clean settings file that ONLY includes your extension
+          echo 'include(":lgbtics")' > settings.gradle.kts
+          
+          # 5. Build only your extension, explicitly skipping all signing and repo-wide tasks
+          chmod +x gradlew
+          ./gradlew :lgbtics:assembleDebug \
             -x spotlessKotlinCheck \
             -x lintDebug \
             -x test \
             -x check \
             -x signRelease \
-            -x packageRelease
-          
+            -x packageRelease \
+            --no-daemon
+            
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
         with:
           name: lgbtics-extension-apk
-          path: "isolated_build/lgbtics/build/outputs/apk/debug/*.apk"
+          path: "../isolated_workspace/lgbtics/build/outputs/apk/debug/*.apk"
