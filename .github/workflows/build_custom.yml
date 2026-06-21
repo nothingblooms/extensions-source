@@ -59,7 +59,7 @@ jobs:
          cp -r lib-multisrc isolated_build/
           
          # 3. Create a clean settings file and dummy build file for the new root
-         echo "include(':lgbtics')" > isolated_build/settings.gradle.kts
+         echo 'include(":lgbtics")' > isolated_build/settings.gradle.kts
          echo "rootProject.name = 'isolated-build'" > isolated_build/build.gradle.kts
           
          # 4. Copy the gradlew wrapper into the isolated folder
