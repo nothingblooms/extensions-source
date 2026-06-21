@@ -37,10 +37,14 @@ jobs:
 
       - name: Build Extension
         run: |
-          # Build ONLY your extension, passing the project path.
-          # The root settings.gradle.kts will handle the setup, 
-          # and this will only execute the tasks for YOUR extension.
-          ./gradlew :src:en:lgbtics:assembleDebug -x spotlessKotlinCheck -x lintDebug -x test -x check
+          # Build only your extension and specifically exclude all signing tasks
+          ./gradlew :src:en:lgbtics:assembleDebug \
+            -x spotlessKotlinCheck \
+            -x lintDebug \
+            -x test \
+            -x check \
+            -x signRelease \
+            -x packageRelease
           
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
