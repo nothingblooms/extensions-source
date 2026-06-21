@@ -21,20 +21,21 @@ jobs:
           # 1. Create a totally separate workspace
           mkdir -p ../isolated_workspace
           
-          # 2. Copy ONLY the necessary components for your extension
+          # 2. Copy the necessary components for your extension AND the libraries
           cp -r src/en/lgbtics ../isolated_workspace/
           cp -r core ../isolated_workspace/
           cp -r lib-multisrc ../isolated_workspace/
+          cp -r multisrc ../isolated_workspace/  # <--- THIS IS THE FIX
           cp -r gradle ../isolated_workspace/
           cp gradlew ../isolated_workspace/
           
           # 3. Enter the isolated workspace
           cd ../isolated_workspace
           
-          # 4. Create a clean settings file that ONLY includes your extension
+          # 4. Create a clean settings file
           echo 'include(":lgbtics")' > settings.gradle.kts
           
-          # 5. Build only your extension, explicitly skipping all signing and repo-wide tasks
+          # 5. Build only your extension, skipping signing
           chmod +x gradlew
           ./gradlew :lgbtics:assembleDebug \
             -x spotlessKotlinCheck \
