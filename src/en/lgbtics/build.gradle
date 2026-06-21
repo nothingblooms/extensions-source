@@ -5,17 +5,21 @@ ext {
     isNsfw = true
 }
 
-apply plugin: "kei.plugins.extension.legacy"
+apply(plugin = "com.android.application")
+apply(plugin = "kotlin-android")
 
 android {
+    namespace = "eu.kanade.tachiyomi.extension.en.lgbtics"
+    compileSdk = 34
+    
     defaultConfig {
-        manifestPlaceholders += [
-            SOURCEHOST: "lgbtics.com",
-            SOURCESCHEME: "https"
-        ]
+        minSdk = 21
     }
 }
 
 dependencies {
-    implementation(project(":lib-multisrc:madara"))
+    // This line is what fixes your "Unresolved reference" errors
+    implementation(project(":multisrc:src:main:java:eu:kanade:tachiyomi:multisrc:madara"))
+    // You also need the core library
+    implementation(project(":core"))
 }
