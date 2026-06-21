@@ -1,16 +1,11 @@
 ext {
     extName = 'Lgbtics'
     extClass = '.Lgbtics'
-    themePkg = 'madara'
-    baseUrl = 'https://lgbtics.com'
+    extVersionCode = 1
     isNsfw = true
-    overrideVersionCode = 0
 }
 
 apply from: "$rootDir/multisrc/multisrc.gradle"
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 android {
     namespace = 'eu.kanade.tachiyomi.extension.en.lgbtics'
@@ -18,8 +13,4 @@ android {
     defaultConfig {
         minSdk = 21
     }
-}
-
-dependencies {
-    implementation project(':core')
 }
