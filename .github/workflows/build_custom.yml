@@ -37,35 +37,27 @@ jobs:
 
       - name: Build Extension
         run: |
-          # 1. Create a truly isolated workspace
           mkdir -p isolated_build
-          
-          # 2. Copy only the necessary files
           cp -r src/en/lgbtics isolated_build/
           cp -r core isolated_build/
           cp -r lib-multisrc isolated_build/
           
-          # 3. Create settings and build files using cat to ensure double quotes
-          cat <<EOF > isolated_build/settings.gradle.kts
+          # Create a settings file that explicitly defines the project
+          cat <<EOF > settings.gradle.kts
+          rootProject.name = "isolated-build"
           include(":lgbtics")
           EOF
           
-          cat <<EOF > isolated_build/build.gradle.kts
-          rootProject.name = "isolated-build"
-          EOF
+          # We don't actually need a build.gradle.kts in the root for a simple build,
+          # but if we do, make it completely empty to avoid conflict.
+          touch build.gradle.kts
           
-          # 4. Copy the gradlew wrapper
           cp gradlew isolated_build/
           cp -r gradle isolated_build/
           chmod +x isolated_build/gradlew
           
-          # 5. Build from the isolated workspace
-          cd isolated_build
-          ./gradlew :lgbtics:assembleDebug \
-            -x spotlessKotlinCheck \
-            -x lintDebug \
-            -x test \
-            -x check
+          # Run gradle from the root, pointing specifically to the isolated build
+          ./gradlew :lgbtics:assembleDebug -x spotlessKotlinCheck -x lintDebug -x test -x check
           
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
