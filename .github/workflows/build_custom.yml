@@ -7,6 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+     
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -16,7 +17,14 @@ jobs:
             gradle
             lib
             lib-multisrc
-            src/en/lgbtics
+            # DO NOT include src here
+
+      - name: Setup Extension
+        run: |
+          # Manually create the path and pull ONLY your extension
+          mkdir -p src/en/lgbtics
+          # This assumes your repo has the files, we just 'git checkout' the specific folder
+          git sparse-checkout add src/en/lgbtics
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -43,10 +51,9 @@ jobs:
       - name: Build Extension
         run: |
           chmod +x gradlew
-          # Skip ALL checking tasks including Spotless and Lint
-          # and specifically target only your extension
-          ./gradlew :src:en:lgbtics:assembleDebug --settings-file settings.gradle.kts -x spotlessKotlinCheck -x lintDebug -x test -x check
-            -x spotlessKotlinCheck \
+          # Now, because we only ever checked out YOUR extension, 
+          # Gradle literally cannot see any other extensions to build/sign.
+          ./gradlew :src:en:lgbtics:assembleDebug -x spotlessKotlinCheck
             -x lintDebug \
             -x test \
             -x check
